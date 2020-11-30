@@ -20,3 +20,5 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/quiz/create', [App\Http\Controllers\QuizController::class, 'create']);
+Route::post('/quiz/store', [App\Http\Controllers\QuizController::class, 'store']);
