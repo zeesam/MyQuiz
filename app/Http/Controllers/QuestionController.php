@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
+use App\Models\Question;
 class QuestionController extends Controller
 {
     /**
@@ -13,7 +13,8 @@ class QuestionController extends Controller
      */
     public function index()
     {
-        //
+        $question = Question::all();
+        return view('question/view',['question'=>$question]);
     }
 
     /**
@@ -23,7 +24,7 @@ class QuestionController extends Controller
      */
     public function create()
     {
-        //
+        return view('question/create');
     }
 
     /**
@@ -34,7 +35,9 @@ class QuestionController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $this->FormValidate($request);
+        $question = (new Question)->questionstore($data);
+        return redirect('/question/create')->with('message','Question Created!');
     }
 
     /**
@@ -45,7 +48,8 @@ class QuestionController extends Controller
      */
     public function show($id)
     {
-        //
+        $question = Question::find($id);
+        return view('question/show',['question'=>$question]);
     }
 
     /**
@@ -56,7 +60,8 @@ class QuestionController extends Controller
      */
     public function edit($id)
     {
-        //
+        $question = Question::find($id);
+        return view('question/edit',['question'=>$question]);
     }
 
     /**
@@ -68,7 +73,9 @@ class QuestionController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $data = $this->FormValidate($request,$id);
+        $question = (new Question)->questionupdate($data,$id);
+        return redirect('/question/view')->with('message','Question Updated!');
     }
 
     /**
@@ -79,6 +86,20 @@ class QuestionController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $question = Question::find($id);
+        $question->delete();
+        return redirect('/question/view')->with('message','Question Deleted!');
+    }
+    public function FormValidate($request)
+    {
+        return $this->validate($request,[
+          'quiz_id' => 'required',
+          'question' => 'required|string',
+          'optiona' => 'required',
+          'optionb' => 'required',
+          'optionc' => 'required',
+          'optiond' => 'required',
+          'correct_ans' => 'required'
+        ]);
     }
 }

@@ -17,4 +17,16 @@ class Question extends Model
       'optiond',
       'correct_ans'
     ];
+    public function questionstore($data)
+    {
+      return Question::create($data);
+    }
+    public function questionupdate($data,$id)
+    {
+      return Question::find($id)->update($data);
+    }
+    public function quizer()
+    {
+      return $this->hasOne('App\Models\Quiz','id','quiz_id');
+    }
 }

@@ -13,7 +13,8 @@ class QuizController extends Controller
      */
     public function index()
     {
-        //
+        $quiz = Quiz::all();
+        return view('/quiz/view',['quiz'=>$quiz]);
     }
 
     /**
@@ -47,7 +48,8 @@ class QuizController extends Controller
      */
     public function show($id)
     {
-        //
+        $quiz = Quiz::find($id);
+        return view('/quiz/show',['quiz'=>$quiz]);
     }
 
     /**
@@ -58,7 +60,8 @@ class QuizController extends Controller
      */
     public function edit($id)
     {
-        //
+        $quiz = Quiz::find($id);
+        return view('quiz/edit',['quiz'=>$quiz]);
     }
 
     /**
@@ -70,7 +73,9 @@ class QuizController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $data = $this->ValidateForm($request,$id);
+        $quiz = (new Quiz)->quizupdate($data,$id);
+        return redirect('/quiz/view')->with('message','Quiz Updated! ');
     }
 
     /**
@@ -81,7 +86,9 @@ class QuizController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $quiz = Quiz::find($id);
+        $quiz->delete();
+        return redirect('/quiz/view')->with('message','Quiz Deleted!');
     }
 
     public function ValidateForm($request)
